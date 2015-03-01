@@ -1,4 +1,4 @@
-package com.airsystem.sample.service;
+package com.airsystem.sample.api.service;
 
 import org.springframework.stereotype.Component;
 
