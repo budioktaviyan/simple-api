@@ -2,6 +2,7 @@ buildscript {
     ext {
         springBootVersion = '1.2.1.RELEASE'
         mysqlVersion = '5.1.34'
+        hibernateVersion = '4.3.7.Final'
     }
 
     repositories {
@@ -38,10 +39,10 @@ configurations.all {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-log4j:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-rest:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
     compile("mysql:mysql-connector-java:${mysqlVersion}")
+    compile("org.hibernate:hibernate-c3p0:${hibernateVersion}")
 }
 
 task wrapper(type: Wrapper) {
