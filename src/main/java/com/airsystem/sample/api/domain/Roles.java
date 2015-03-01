@@ -34,15 +34,6 @@ public class Roles implements Serializable {
 	@JsonBackReference
 	private Users users;
 
-	public Roles() {
-	}
-
-	public Roles(Long pId, String pName, Users pUsers) {
-		id = pId;
-		name = pName;
-		users = pUsers;
-	}
-
 	public Long getId() {
 		return id;
 	}

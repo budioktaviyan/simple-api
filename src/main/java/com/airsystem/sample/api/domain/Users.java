@@ -35,16 +35,6 @@ public class Users implements Serializable {
 	@JsonManagedReference
 	private Roles roles;
 
-	public Users() {
-	}
-
-	public Users(Long pId, String pUsername, String pPassword, Roles pRoles) {
-		id = pId;
-		username = pUsername;
-		password = pPassword;
-		roles = pRoles;
-	}
-
 	public Long getId() {
 		return id;
 	}
