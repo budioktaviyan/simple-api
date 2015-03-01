@@ -2,10 +2,12 @@ package com.airsystem.sample.api.service;
 
 import java.util.List;
 
+import com.airsystem.sample.api.domain.Employee;
+
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
  */
-public interface IDatabaseService<T> {
+public interface IEmployeeService {
 
-	List<T> findById(String id);
+	List<Employee> findAll();
 }
