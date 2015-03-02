@@ -8,7 +8,7 @@
 * Spring Boot.
 * Spring Security.
 * Spring Data JPA.
-* Spring Data REST.
+* REST API.
 * MySQL Database.
 
 ## Step to Build:
