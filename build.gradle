@@ -33,13 +33,15 @@ repositories {
 }
 
 configurations.all {
-    exclude module: 'slf4j-log4j12'
+    exclude group: 'org.slf4j'
+    exclude module: 'spring-boot-starter-logging'
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-log4j:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-log4j:${springBootVersion}")
     compile("mysql:mysql-connector-java:${mysqlVersion}")
     compile("org.hibernate:hibernate-c3p0:${hibernateVersion}")
 }
