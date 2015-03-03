@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.airsystem.sample.api.domain.Employee;
-import com.airsystem.sample.api.repository.IEmployeeRepository;
+import com.airsystem.sample.api.domain.Users;
+import com.airsystem.sample.api.repository.IUsersRepository;
 import com.airsystem.sample.api.utils.Constants;
 
 /**
@@ -17,16 +17,16 @@ import com.airsystem.sample.api.utils.Constants;
  */
 
 @RestController
-@RequestMapping("/employee")
-public class EmployeeController {
-	private static final Logger LOG = Logger.getLogger(EmployeeController.class.getSimpleName());
+@RequestMapping("/users")
+public class UsersController {
+	private static final Logger LOG = Logger.getLogger(UsersController.class.getSimpleName());
 
 	@Autowired
-	private IEmployeeRepository mEmployeeRepository;
+	private IUsersRepository mUsersRepository;
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public Page<Employee> getAllEmployee() {
-		LOG.info("EmployeeController.getAllEmployee");
-		return mEmployeeRepository.findAll(new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE));
+	public Page<Users> getAllUsers() {
+		LOG.info("UsersController.getAllUsers");
+		return mUsersRepository.findAll(new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE));
 	}
 }

@@ -33,8 +33,7 @@ repositories {
 }
 
 configurations.all {
-    exclude group: 'org.slf4j'
-    exclude module: 'spring-boot-starter-logging'
+    exclude module: 'slf4j-log4j12'
 }
 
 dependencies {

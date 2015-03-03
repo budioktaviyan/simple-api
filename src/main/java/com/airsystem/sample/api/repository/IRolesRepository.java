@@ -13,5 +13,5 @@ import com.airsystem.sample.api.domain.Roles;
 
 @Repository
 public interface IRolesRepository extends PagingAndSortingRepository<Roles, Long> {
-	List<Roles> findByRolesName(String name);
+	List<Roles> findByName(String name);
 }

@@ -13,5 +13,5 @@ import com.airsystem.sample.api.domain.Users;
 
 @Repository
 public interface IUsersRepository extends PagingAndSortingRepository<Users, Long> {
-	List<Users> findByUsersName(String name);
+	List<Users> findByUsername(String name);
 }

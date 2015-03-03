@@ -13,5 +13,5 @@ import com.airsystem.sample.api.domain.Employee;
 
 @Repository
 public interface IEmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
-	List<Employee> findByEmployeeName(String name);
+	List<Employee> findByName(String name);
 }
