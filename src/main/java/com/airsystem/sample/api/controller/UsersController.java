@@ -25,8 +25,9 @@ public class UsersController {
 	private IUsersRepository mUsersRepository;
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public Page<Users> getAllUsers() {
-		LOG.info("UsersController.getAllUsers");
-		return mUsersRepository.findAll(new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE));
+	public Page<Users> findAll() {
+		LOG.info("UsersController.findAll()");
+		PageRequest pageRequest = new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE);
+		return mUsersRepository.findAll(pageRequest);
 	}
 }

@@ -25,8 +25,9 @@ public class EmployeeController {
 	private IEmployeeRepository mEmployeeRepository;
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public Page<Employee> getAllEmployee() {
-		LOG.info("EmployeeController.getAllEmployee");
-		return mEmployeeRepository.findAll(new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE));
+	public Page<Employee> findAll() {
+		LOG.info("EmployeeController.findAll()");
+		PageRequest pageRequest = new PageRequest(Constants.START_PAGE, Constants.PAGE_SIZE);
+		return mEmployeeRepository.findAll(pageRequest);
 	}
 }
