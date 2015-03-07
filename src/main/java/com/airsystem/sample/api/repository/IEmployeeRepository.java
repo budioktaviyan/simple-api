@@ -2,16 +2,13 @@ package com.airsystem.sample.api.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
 import com.airsystem.sample.api.domain.Employee;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
  */
-
-@Repository
-public interface IEmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
-	List<Employee> findByName(String name);
+public interface IEmployeeRepository extends Repository<Employee, Long> {
+	List<Employee> findAll();
 }
