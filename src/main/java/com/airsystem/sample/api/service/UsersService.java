@@ -35,4 +35,15 @@ public class UsersService {
 		Pageable pageable = new PageRequest(offset, size);
 		return mUsersRepository.findAll(pageable);
 	}
+
+	public List<Users> findByNotRoleName(String name) {
+		LOG.info(String.format("UsersService.findByNotRoleName(%s)", name));
+		return mUsersRepository.findByNotName(name);
+	}
+
+	public Page<Users> findByNotRoleNameAndPaging(String name, int offset, int size) {
+		LOG.info(String.format("UsersService.findByNotRoleNameAndPaging(%s)", name));
+		Pageable pageable = new PageRequest(offset, size);
+		return mUsersRepository.findByNotNameAndPaging(name, pageable);
+	}
 }

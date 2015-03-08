@@ -36,4 +36,16 @@ public class UsersController {
 		LOG.info("UsersController.findAllAndPaging()");
 		return mUsersService.findAllAndPaging(offset, size);
 	}
+
+	@RequestMapping(value = "/allusers", method = RequestMethod.GET)
+	public List<Users> findByNotRoleName(@RequestParam String name) {
+		LOG.info(String.format("UsersController.findByNotRoleName(%s)", name));
+		return mUsersService.findByNotRoleName(name);
+	}
+
+	@RequestMapping(value = "/allusers/pages", method = RequestMethod.GET)
+	public Page<Users> findByNotRoleNameAndPaging(@RequestParam String name, @RequestParam int offset, @RequestParam int size) {
+		LOG.info(String.format("UsersController.findByNotRoleNameAndPaging(%s)", name));
+		return mUsersService.findByNotRoleNameAndPaging(name, offset, size);
+	}
 }
