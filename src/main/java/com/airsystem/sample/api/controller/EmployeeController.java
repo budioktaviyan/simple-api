@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.airsystem.sample.api.domain.Employee;
@@ -31,9 +31,9 @@ public class EmployeeController {
 		return mEmployeeService.findAll();
 	}
 
-	@RequestMapping(value = "/all/{page}", method = RequestMethod.GET)
-	public Page<Employee> findAllAndPaging(@PathVariable Integer page) {
+	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
+	public Page<Employee> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
 		LOG.info("EmployeeController.findAllAndPaging()");
-		return mEmployeeService.findAllAndPaging(page);
+		return mEmployeeService.findAllAndPaging(offset, size);
 	}
 }

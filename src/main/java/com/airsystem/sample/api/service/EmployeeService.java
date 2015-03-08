@@ -6,12 +6,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.airsystem.sample.api.domain.Employee;
 import com.airsystem.sample.api.repository.IEmployeeRepository;
-import com.airsystem.sample.api.utils.Constants;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
@@ -30,9 +30,9 @@ public class EmployeeService {
 		return mEmployeeRepository.findAll();
 	}
 
-	public Page<Employee> findAllAndPaging(Integer page) {
+	public Page<Employee> findAllAndPaging(int offset, int size) {
 		LOG.info("EmployeeService.findAllAndPaging()");
-		PageRequest pageRequest = new PageRequest(page - 1, Constants.PAGE_SIZE);
-		return mEmployeeRepository.findAll(pageRequest);
+		Pageable pageable = new PageRequest(offset, size);
+		return mEmployeeRepository.findAll(pageable);
 	}
 }
