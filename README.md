@@ -15,4 +15,5 @@
 * Build API Components using [Gradle](https://gradle.org/ "gradle")
 * Modify username and password for Your Database in application.properties
 * Create "application" Schema using UTF-8 Encoding.
+* Export application.sql File to Your MySQL Database Schema.
 * Run API as Gradle Project.
