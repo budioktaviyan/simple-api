@@ -35,4 +35,9 @@ public class EmployeeService {
 		Pageable pageable = new PageRequest(offset, size);
 		return mEmployeeRepository.findAll(pageable);
 	}
+
+	public Employee createOrModifyEmployee(Employee employee) {
+		LOG.info(String.format("EmployeeService.createOrModifyEmployee(%s)", employee.getName()));
+		return mEmployeeRepository.saveAndFlush(employee);
+	}
 }
