@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,10 @@ public interface IUsersRepository extends JpaRepository<Users, Long> {
 
 	@Query("select users from Users users where roles.name != :name")
 	Page<Users> findByNotNameAndPaging(@Param("name") String name, Pageable pageable);
+
+	@Modifying
+	@Query("update Users set password = :newpassword where username = :username and password = :oldpassword")
+	Integer modifyPassword(@Param("username") String username,
+						   @Param("oldpassword") String oldpassword,
+						   @Param("newpassword") String newpassword);
 }

@@ -78,4 +78,21 @@ public class UsersController {
 
 		return jsonObject;
 	}
+
+	@RequestMapping(value = "/modifypassword", method = RequestMethod.POST)
+	public Map<String, String> modifyUsersPassword(@RequestParam String username,
+												   @RequestParam String oldpassword,
+												   @RequestParam String newpassword) {
+		LOG.info(String.format("UsersController.modifyUsersPassword(%s, %s, %s)", username, oldpassword, newpassword));
+		Map<String, String> jsonObject = new HashMap<String, String>();
+		try {
+			mUsersService.modifyUsersPassword(username, oldpassword, newpassword);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.toString());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+		}
+
+		return jsonObject;
+	}
 }

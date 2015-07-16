@@ -58,4 +58,15 @@ public class UsersService {
 		mUsersRepository.save(users);
 		mRolesRepository.save(roles);
 	}
+
+	public Integer modifyUsersPassword(String username, String oldpassword, String newpassword) throws Exception {
+		LOG.info(String.format("UsersService.modifyUsersPassword(%s, %s, %s)", username, oldpassword, newpassword));
+
+		Integer result = mUsersRepository.modifyPassword(username, oldpassword, newpassword);
+		if (result == 0) {
+			throw new Exception("update password not valid");
+		}
+
+		return result;
+	}
 }
