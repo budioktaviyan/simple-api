@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.airsystem.sample.api.domain.Roles;
 import com.airsystem.sample.api.domain.Users;
+import com.airsystem.sample.api.repository.IRolesRepository;
 import com.airsystem.sample.api.repository.IUsersRepository;
 
 /**
@@ -24,6 +26,9 @@ public class UsersService {
 
 	@Autowired
 	private IUsersRepository mUsersRepository;
+
+	@Autowired
+	private IRolesRepository mRolesRepository;
 
 	public List<Users> findAll() {
 		LOG.info("UsersService.findAll()");
@@ -45,5 +50,12 @@ public class UsersService {
 		LOG.info(String.format("UsersService.findByNotRoleNameAndPaging(%s)", name));
 		Pageable pageable = new PageRequest(offset, size);
 		return mUsersRepository.findByNotNameAndPaging(name, pageable);
+	}
+
+	public void createOrModifyUsers(Users users, Roles roles) {
+		LOG.info(String.format("UsersService.createOrModifyUsers(%s, %s)",
+								users.getUsername(), roles.getName()));
+		mUsersRepository.save(users);
+		mRolesRepository.save(roles);
 	}
 }
