@@ -73,4 +73,9 @@ public class UsersService {
 
 		return result;
 	}
+
+	public void deleteUsers(Long id) {
+		LOG.info(String.format("UsersService.deleteUsers(id=%d)", id));
+		mUsersRepository.delete(id);
+	}
 }

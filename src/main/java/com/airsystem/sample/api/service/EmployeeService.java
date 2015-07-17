@@ -41,4 +41,9 @@ public class EmployeeService {
 		LOG.info(String.format("EmployeeService.createOrModifyEmployee(%s)", employee.getName()));
 		return mEmployeeRepository.saveAndFlush(employee);
 	}
+
+	public void deleteEmployee(Long id) {
+		LOG.info(String.format("EmployeeService.deleteEmployee(id=%d)", id));
+		mEmployeeRepository.delete(id);
+	}
 }

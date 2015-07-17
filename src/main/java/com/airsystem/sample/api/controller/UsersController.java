@@ -98,4 +98,19 @@ public class UsersController {
 
 		return jsonObject;
 	}
+
+	@RequestMapping(value = "/deleteusers", method = RequestMethod.DELETE)
+	public Map<String, String> deleteUsers(@RequestParam Long id) {
+		LOG.info(String.format("UsersController.deleteUsers(id=%d)", id));
+		Map<String, String> jsonObject = new HashMap<String, String>();
+		try {
+			mUsersService.deleteUsers(id);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
+		}
+
+		return jsonObject;
+	}
 }

@@ -57,4 +57,19 @@ public class EmployeeController {
 
 		return jsonObject;
 	}
+
+	@RequestMapping(value = "/deleteemployee", method = RequestMethod.DELETE)
+	public Map<String, String> deleteEmployee(@RequestParam Long id) {
+		LOG.info(String.format("EmployeeController.deleteEmployee(id=%d)", id));
+		Map<String, String> jsonObject = new HashMap<String, String>();
+		try {
+			mEmployeeService.deleteEmployee(id);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
+		}
+
+		return jsonObject;
+	}
 }
