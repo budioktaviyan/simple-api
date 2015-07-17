@@ -14,6 +14,7 @@ import com.airsystem.sample.api.domain.Roles;
 import com.airsystem.sample.api.domain.Users;
 import com.airsystem.sample.api.repository.IRolesRepository;
 import com.airsystem.sample.api.repository.IUsersRepository;
+import com.airsystem.sample.api.utils.Constants;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
@@ -36,7 +37,8 @@ public class UsersService {
 	}
 
 	public Page<Users> findAllAndPaging(int offset, int size) {
-		LOG.info("UsersService.findAllAndPaging()");
+		LOG.info(String.format("UsersService.findAllAndPaging(offset=%d, size=%d)",
+								offset, size));
 		Pageable pageable = new PageRequest(offset, size);
 		return mUsersRepository.findAll(pageable);
 	}
@@ -47,24 +49,26 @@ public class UsersService {
 	}
 
 	public Page<Users> findByNotRoleNameAndPaging(String name, int offset, int size) {
-		LOG.info(String.format("UsersService.findByNotRoleNameAndPaging(%s)", name));
+		LOG.info(String.format("UsersService.findByNotRoleNameAndPaging(name=%s, offset=%d, size=%d)",
+								name, offset, size));
 		Pageable pageable = new PageRequest(offset, size);
 		return mUsersRepository.findByNotNameAndPaging(name, pageable);
 	}
 
 	public void createOrModifyUsers(Users users, Roles roles) {
-		LOG.info(String.format("UsersService.createOrModifyUsers(%s, %s)",
+		LOG.info(String.format("UsersService.createOrModifyUsers(username=%s, roles=%s)",
 								users.getUsername(), roles.getName()));
 		mUsersRepository.save(users);
 		mRolesRepository.save(roles);
 	}
 
 	public Integer modifyUsersPassword(String username, String oldpassword, String newpassword) throws Exception {
-		LOG.info(String.format("UsersService.modifyUsersPassword(%s, %s, %s)", username, oldpassword, newpassword));
+		LOG.info(String.format("UsersService.modifyUsersPassword(username=%s, oldpassword=%s, newpassword=%s)",
+								username, oldpassword, newpassword));
 
 		Integer result = mUsersRepository.modifyPassword(username, oldpassword, newpassword);
-		if (result == 0) {
-			throw new Exception("update password not valid");
+		if (result == Constants.EMPTY) {
+			throw new Exception("Update new password is not valid!");
 		}
 
 		return result;

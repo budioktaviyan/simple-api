@@ -31,7 +31,8 @@ public class EmployeeService {
 	}
 
 	public Page<Employee> findAllAndPaging(int offset, int size) {
-		LOG.info("EmployeeService.findAllAndPaging()");
+		LOG.info(String.format("EmployeeService.findAllAndPaging(offset=%d, size=%d)",
+								offset, size));
 		Pageable pageable = new PageRequest(offset, size);
 		return mEmployeeRepository.findAll(pageable);
 	}

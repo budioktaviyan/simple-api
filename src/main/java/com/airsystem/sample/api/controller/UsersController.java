@@ -19,6 +19,7 @@ import com.airsystem.sample.api.domain.Users;
 import com.airsystem.sample.api.domain.UsersDetail;
 import com.airsystem.sample.api.service.UsersService;
 import com.airsystem.sample.api.utils.Configs;
+import com.airsystem.sample.api.utils.Constants;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
@@ -40,7 +41,8 @@ public class UsersController {
 
 	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
 	public Page<Users> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
-		LOG.info("UsersController.findAllAndPaging()");
+		LOG.info(String.format("UsersController.findAllAndPaging(offset=%d, size=%d)",
+								offset, size));
 		return mUsersService.findAllAndPaging(offset, size);
 	}
 
@@ -52,28 +54,28 @@ public class UsersController {
 
 	@RequestMapping(value = "/allusers/pages", method = RequestMethod.GET)
 	public Page<Users> findByNotRoleNameAndPaging(@RequestParam String name, @RequestParam int offset, @RequestParam int size) {
-		LOG.info(String.format("UsersController.findByNotRoleNameAndPaging(%s)", name));
+		LOG.info(String.format("UsersController.findByNotRoleNameAndPaging(name=%s, offset=%d, size=%d)",
+								name, offset, size));
 		return mUsersService.findByNotRoleNameAndPaging(name, offset, size);
 	}
 
 	@RequestMapping(value = "/createmodifyusers", method = RequestMethod.POST)
 	public Map<String, String> createOrModifyUsers(@RequestBody UsersDetail usersDetail) {
-		LOG.info(String.format("UsersController.createOrModifyUsers(%s, %s)",
-								usersDetail.getUsers().get(0).getUsername(),
-								usersDetail.getRoles().get(0).getName()));
+		LOG.info(String.format("UsersController.createOrModifyUsers(username=%s, roles=%s)",
+								usersDetail.getUsers().get(Constants.FIRST_INDEX).getUsername(),
+								usersDetail.getRoles().get(Constants.FIRST_INDEX).getName()));
 		Map<String, String> jsonObject = new HashMap<String, String>();
 		try {
-			Users users = usersDetail.getUsers().get(0);
-			Roles roles = usersDetail.getRoles().get(0);
-
+			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
+			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
 			users.setPassword(users.getPassword());
 			roles.setUsers(users);
-			mUsersService.createOrModifyUsers(users, roles);
 
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.toString());
+			mUsersService.createOrModifyUsers(users, roles);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
 		}
 
 		return jsonObject;
@@ -83,14 +85,15 @@ public class UsersController {
 	public Map<String, String> modifyUsersPassword(@RequestParam String username,
 												   @RequestParam String oldpassword,
 												   @RequestParam String newpassword) {
-		LOG.info(String.format("UsersController.modifyUsersPassword(%s, %s, %s)", username, oldpassword, newpassword));
+		LOG.info(String.format("UsersController.modifyUsersPassword(username=%s, oldpassword=%s, newpassword=%s)",
+								username, oldpassword, newpassword));
 		Map<String, String> jsonObject = new HashMap<String, String>();
 		try {
 			mUsersService.modifyUsersPassword(username, oldpassword, newpassword);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.toString());
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
 		}
 
 		return jsonObject;

@@ -38,20 +38,21 @@ public class EmployeeController {
 
 	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
 	public Page<Employee> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
-		LOG.info("EmployeeController.findAllAndPaging()");
+		LOG.info(String.format("EmployeeController.findAllAndPaging(offset=%d, size=%d)",
+								offset, size));
 		return mEmployeeService.findAllAndPaging(offset, size);
 	}
 
 	@RequestMapping(value = "/createmodifyemployee", method = RequestMethod.POST)
 	public Map<String, String> createOrModifyEmployee(@RequestBody Employee employee) {
-		LOG.info(String.format("EmployeeController.EmployeeController(%s)", employee.getName()));
+		LOG.info(String.format("EmployeeController.createOrModifyEmployee(%s)", employee.getName()));
 		Map<String, String> jsonObject = new HashMap<String, String>();
 		try {
 			mEmployeeService.createOrModifyEmployee(employee);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.toString());
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
 		}
 
 		return jsonObject;
