@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,11 +67,12 @@ public class UsersController {
 								usersDetail.getRoles().get(Constants.FIRST_INDEX).getName()));
 		Map<String, String> jsonObject = new HashMap<String, String>();
 		try {
+			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
 			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
 			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
-			users.setPassword(users.getPassword());
-			roles.setUsers(users);
 
+			users.setPassword(shaPasswordEncoder.encodePassword(users.getPassword(), null));
+			roles.setUsers(users);
 			mUsersService.createOrModifyUsers(users, roles);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
@@ -89,6 +91,10 @@ public class UsersController {
 								username, oldpassword, newpassword));
 		Map<String, String> jsonObject = new HashMap<String, String>();
 		try {
+			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
+			oldpassword = shaPasswordEncoder.encodePassword(oldpassword, null);
+			newpassword = shaPasswordEncoder.encodePassword(newpassword, null);
+
 			mUsersService.modifyUsersPassword(username, oldpassword, newpassword);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
