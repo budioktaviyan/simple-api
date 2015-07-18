@@ -16,9 +16,6 @@ CREATE TABLE `tbl_roles` (
   CONSTRAINT `FK_USERS` FOREIGN KEY (`userid`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO tbl_users values(1, 'admin', SHA('admin'));
-INSERT INTO tbl_roles VALUES (1,'ADMIN',1);
-
 DROP TABLE IF EXISTS `tbl_employee`;
 CREATE TABLE `tbl_employee` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
