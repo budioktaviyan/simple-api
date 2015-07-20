@@ -24,34 +24,32 @@ import com.airsystem.sample.api.utils.Configs;
  */
 
 @RestController
-@RequestMapping(value = "/employee",
-				consumes = MediaType.APPLICATION_JSON_VALUE,
-				produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/employee")
 public class EmployeeController {
 	private static final Logger LOG = Logger.getLogger(EmployeeController.class.getSimpleName());
 
 	@Autowired
 	private EmployeeService mEmployeeService;
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public List<Employee> findAll() {
 		LOG.info("EmployeeController.findAll()");
 		return mEmployeeService.findAll();
 	}
 
-	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
+	@RequestMapping(value = "/all/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Page<Employee> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
-		LOG.info(String.format("EmployeeController.findAllAndPaging(offset=%d, size=%d)",
-								offset, size));
+		LOG.info(String.format("EmployeeController.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		return mEmployeeService.findAllAndPaging(offset, size);
 	}
 
-	@RequestMapping(value = "/createmodifyemployee", method = RequestMethod.POST)
-	public Map<String, String> createOrModifyEmployee(@RequestBody Employee employee) {
-		LOG.info(String.format("EmployeeController.createOrModifyEmployee(%s)", employee.getName()));
+	@RequestMapping(value = "/createormodify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, String> saveOrSet(@RequestBody Employee employee) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
+
 		try {
-			mEmployeeService.createOrModifyEmployee(employee);
+			LOG.info(String.format("EmployeeController.saveOrSet(name=%s)", employee.getName()));
+			mEmployeeService.saveOrSet(employee);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -61,12 +59,13 @@ public class EmployeeController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/deleteemployee", method = RequestMethod.DELETE)
-	public Map<String, String> deleteEmployee(@RequestParam Long id) {
-		LOG.info(String.format("EmployeeController.deleteEmployee(id=%d)", id));
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, String> delete(@RequestParam Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
+
 		try {
-			mEmployeeService.deleteEmployee(id);
+			LOG.info(String.format("EmployeeController.delete(ID=%d)", id));
+			mEmployeeService.delete(id);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

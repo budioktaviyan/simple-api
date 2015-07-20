@@ -28,55 +28,50 @@ import com.airsystem.sample.api.utils.Constants;
  */
 
 @RestController
-@RequestMapping(value = "/users",
-				consumes = MediaType.APPLICATION_JSON_VALUE,
-				produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/users")
 public class UsersController {
 	private static final Logger LOG = Logger.getLogger(UsersController.class.getSimpleName());
 
 	@Autowired
 	private UsersService mUsersService;
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public List<Users> findAll() {
 		LOG.info("UsersController.findAll()");
 		return mUsersService.findAll();
 	}
 
-	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
+	@RequestMapping(value = "/roles", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Users> findByRolesName(@RequestParam String rolesname) {
+		LOG.info(String.format("UsersController.findByRolesName(%s)", rolesname));
+		return mUsersService.findByRolesName(rolesname);
+	}
+
+	@RequestMapping(value = "/all/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Page<Users> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
-		LOG.info(String.format("UsersController.findAllAndPaging(offset=%d, size=%d)",
-								offset, size));
+		LOG.info(String.format("UsersController.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		return mUsersService.findAllAndPaging(offset, size);
 	}
 
-	@RequestMapping(value = "/allusers", method = RequestMethod.GET)
-	public List<Users> findByNotRoleName(@RequestParam String name) {
-		LOG.info(String.format("UsersController.findByNotRoleName(%s)", name));
-		return mUsersService.findByNotRoleName(name);
+	@RequestMapping(value = "/roles/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Page<Users> findByRolesNameAndPaging(@RequestParam String rolesname, @RequestParam int offset, @RequestParam int size) {
+		LOG.info(String.format("UsersController.findByRolesNameAndPaging(rolesname=%s, offset=%d, size=%d)", rolesname, offset, size));
+		return mUsersService.findByRolesNameAndPaging(rolesname, offset, size);
 	}
 
-	@RequestMapping(value = "/allusers/pages", method = RequestMethod.GET)
-	public Page<Users> findByNotRoleNameAndPaging(@RequestParam String name, @RequestParam int offset, @RequestParam int size) {
-		LOG.info(String.format("UsersController.findByNotRoleNameAndPaging(name=%s, offset=%d, size=%d)",
-								name, offset, size));
-		return mUsersService.findByNotRoleNameAndPaging(name, offset, size);
-	}
-
-	@RequestMapping(value = "/createmodifyusers", method = RequestMethod.POST)
-	public Map<String, String> createOrModifyUsers(@RequestBody UsersDetail usersDetail) {
-		LOG.info(String.format("UsersController.createOrModifyUsers(username=%s, roles=%s)",
-								usersDetail.getUsers().get(Constants.FIRST_INDEX).getUsername(),
-								usersDetail.getRoles().get(Constants.FIRST_INDEX).getName()));
+	@RequestMapping(value = "/createormodify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, String> saveOrSet(@RequestBody UsersDetail usersDetail) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
+
 		try {
 			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
 			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
 			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
-
 			users.setPassword(shaPasswordEncoder.encodePassword(users.getPassword(), null));
 			roles.setUsers(users);
-			mUsersService.createOrModifyUsers(users, roles);
+
+			LOG.info(String.format("UsersController.saveOrSet(username=%s, roles=%s)", users.getUsername(), roles.getName()));
+			mUsersService.saveOrSet(users, roles);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -86,34 +81,13 @@ public class UsersController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/modifypassword", method = RequestMethod.PUT)
-	public Map<String, String> modifyUsersPassword(@RequestParam String username,
-												   @RequestParam String oldpassword,
-												   @RequestParam String newpassword) {
-		LOG.info(String.format("UsersController.modifyUsersPassword(username=%s, oldpassword=%s, newpassword=%s)",
-								username, oldpassword, newpassword));
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, String> delete(@RequestParam Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
+
 		try {
-			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
-			oldpassword = shaPasswordEncoder.encodePassword(oldpassword, null);
-			newpassword = shaPasswordEncoder.encodePassword(newpassword, null);
-
-			mUsersService.modifyUsersPassword(username, oldpassword, newpassword);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
-		}
-
-		return jsonObject;
-	}
-
-	@RequestMapping(value = "/deleteusers", method = RequestMethod.DELETE)
-	public Map<String, String> deleteUsers(@RequestParam Long id) {
-		LOG.info(String.format("UsersController.deleteUsers(id=%d)", id));
-		Map<String, String> jsonObject = new HashMap<String, String>();
-		try {
-			mUsersService.deleteUsers(id);
+			LOG.info(String.format("UsersController.delete(ID=%d)", id));
+			mUsersService.delete(id);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

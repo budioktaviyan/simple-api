@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +16,7 @@ import com.airsystem.sample.api.domain.Roles;
 import com.airsystem.sample.api.domain.Users;
 import com.airsystem.sample.api.repository.IRolesRepository;
 import com.airsystem.sample.api.repository.IUsersRepository;
-import com.airsystem.sample.api.utils.Constants;
+import com.airsystem.sample.api.utils.Configs;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
@@ -33,49 +35,38 @@ public class UsersService {
 
 	public List<Users> findAll() {
 		LOG.info("UsersService.findAll()");
-		return mUsersRepository.findAll();
+		return mUsersRepository.findAll(sortByUsername());
+	}
+
+	public List<Users> findByRolesName(String rolesname) {
+		LOG.info(String.format("UsersService.findByRolesName(%s)", rolesname));
+		return mUsersRepository.findByRolesName(rolesname, sortByUsername());
 	}
 
 	public Page<Users> findAllAndPaging(int offset, int size) {
-		LOG.info(String.format("UsersService.findAllAndPaging(offset=%d, size=%d)",
-								offset, size));
-		Pageable pageable = new PageRequest(offset, size);
+		LOG.info(String.format("UsersService.findAllAndPaging(offset=%d, size=%d)", offset, size));
+		Pageable pageable = new PageRequest(offset, size, sortByUsername());
 		return mUsersRepository.findAll(pageable);
 	}
 
-	public List<Users> findByNotRoleName(String name) {
-		LOG.info(String.format("UsersService.findByNotRoleName(%s)", name));
-		return mUsersRepository.findByNotName(name);
+	public Page<Users> findByRolesNameAndPaging(String rolesname, int offset, int size) {
+		LOG.info(String.format("UsersService.findByRolesNameAndPaging(rolesname=%s, offset=%d, size=%d)", rolesname, offset, size));
+		Pageable pageable = new PageRequest(offset, size, sortByUsername());
+		return mUsersRepository.findByRolesName(rolesname, pageable);
 	}
 
-	public Page<Users> findByNotRoleNameAndPaging(String name, int offset, int size) {
-		LOG.info(String.format("UsersService.findByNotRoleNameAndPaging(name=%s, offset=%d, size=%d)",
-								name, offset, size));
-		Pageable pageable = new PageRequest(offset, size);
-		return mUsersRepository.findByNotNameAndPaging(name, pageable);
-	}
-
-	public void createOrModifyUsers(Users users, Roles roles) {
-		LOG.info(String.format("UsersService.createOrModifyUsers(username=%s, roles=%s)",
-								users.getUsername(), roles.getName()));
+	public void saveOrSet(Users users, Roles roles) {
+		LOG.info(String.format("UsersService.saveOrSet(username=%s, roles=%s)", users.getUsername(), roles.getName()));
 		mUsersRepository.save(users);
 		mRolesRepository.save(roles);
 	}
 
-	public Integer modifyUsersPassword(String username, String oldpassword, String newpassword) throws Exception {
-		LOG.info(String.format("UsersService.modifyUsersPassword(username=%s, oldpassword=%s, newpassword=%s)",
-								username, oldpassword, newpassword));
-
-		Integer result = mUsersRepository.modifyPassword(username, oldpassword, newpassword);
-		if (result == Constants.EMPTY) {
-			throw new Exception("Update new password is not valid!");
-		}
-
-		return result;
+	public void delete(Long id) {
+		LOG.info(String.format("UsersService.delete(ID=%d)", id));
+		mUsersRepository.delete(id);
 	}
 
-	public void deleteUsers(Long id) {
-		LOG.info(String.format("UsersService.deleteUsers(id=%d)", id));
-		mUsersRepository.delete(id);
+	private Sort sortByUsername() {
+		return new Sort(Direction.DESC, Configs.USERNAME);
 	}
 }

@@ -2,9 +2,13 @@ package com.airsystem.sample.api.domain;
 
 import java.util.List;
 
+import org.springframework.data.repository.NoRepositoryBean;
+
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
  */
+
+@NoRepositoryBean
 public class UsersDetail {
 	private List<Users> users;
 	private List<Roles> roles;
