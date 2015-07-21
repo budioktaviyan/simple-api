@@ -6,6 +6,7 @@ package com.airsystem.sample.api.utils;
 public class Configs {
 	public static final String JSON_RESPONSE = "response";
 	public static final String USERNAME = "username";
+	public static final String PASSWORD = "password";
 	public static final String USERS_OLD_PASSWORD = "oldpassword";
 	public static final String USERS_NEW_PASSWORD = "newpassword";
 	public static final String EMPLOYEE_NAME = "name";
