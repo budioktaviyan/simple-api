@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.airsystem.sample.api.domain.Roles;
 import com.airsystem.sample.api.domain.Users;
-import com.airsystem.sample.api.domain.UsersDetail;
+import com.airsystem.sample.api.domain.custom.UsersDetail;
 import com.airsystem.sample.api.service.UsersService;
 import com.airsystem.sample.api.utils.Configs;
 import com.airsystem.sample.api.utils.Constants;
@@ -65,20 +65,21 @@ public class UsersController {
 		return mUsersService.findById(id);
 	}
 
-	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)
-	public Map<String, String> saveOrSet(@RequestBody UsersDetail usersDetail) {
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public Map<String, String> save(@RequestBody UsersDetail usersDetail) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
 		try {
 			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
+
 			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
-			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
 			users.setPassword(shaPasswordEncoder.encodePassword(users.getPassword(), null));
-			roles.setId(users.getId());
+
+			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
 			roles.setUsers(users);
 
-			LOG.info(String.format("UsersController.saveOrSet(username=%s, roles=%s)", users.getUsername(), roles.getName()));
-			mUsersService.saveOrSet(users, roles);
+			LOG.info(String.format("UsersController.save(username=%s, roles=%s)", users.getUsername(), roles.getName()));
+			mUsersService.save(users, roles);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -88,8 +89,36 @@ public class UsersController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Map<String, String> delete(@RequestParam Long id) {
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	public Map<String, String> update(@PathVariable Long id, @RequestBody UsersDetail usersDetail) {
+		Map<String, String> jsonObject = new HashMap<String, String>();
+
+		try {
+			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
+
+			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
+			users.setId(id);
+			users.setUsername(users.getUsername());
+			users.setPassword(shaPasswordEncoder.encodePassword(users.getPassword(), null));
+
+			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
+			roles.setId(id);
+			roles.setName(roles.getName());
+			roles.setUsers(users);
+
+			LOG.info(String.format("UsersController.save(username=%s, roles=%s)", users.getUsername(), roles.getName()));
+			mUsersService.save(users, roles);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
+		}
+
+		return jsonObject;
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public Map<String, String> delete(@PathVariable Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
 		try {

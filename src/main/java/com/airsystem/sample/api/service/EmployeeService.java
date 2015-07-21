@@ -44,8 +44,8 @@ public class EmployeeService {
 		return mEmployeeRepository.findAll(pageable);
 	}
 
-	public Employee saveOrSet(Employee employee) {
-		LOG.info(String.format("EmployeeService.saveOrSet(name=%s)", employee.getName()));
+	public Employee save(Employee employee) {
+		LOG.info(String.format("EmployeeService.save(name=%s)", employee.getName()));
 		return mEmployeeRepository.saveAndFlush(employee);
 	}
 

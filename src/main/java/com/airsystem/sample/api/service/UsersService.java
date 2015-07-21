@@ -43,6 +43,11 @@ public class UsersService {
 		return mUsersRepository.findOne(id);
 	}
 
+	public Roles findByRolesId(Long id) {
+		LOG.info(String.format("UsersService.findByRolesId(%d)", id));
+		return mRolesRepository.findOne(id);
+	}
+
 	public List<Users> findByRolesName(String rolesname) {
 		LOG.info(String.format("UsersService.findByRolesName(%s)", rolesname));
 		return mUsersRepository.findByRolesName(rolesname, sortByUsername());
@@ -60,8 +65,8 @@ public class UsersService {
 		return mUsersRepository.findByRolesName(rolesname, pageable);
 	}
 
-	public void saveOrSet(Users users, Roles roles) {
-		LOG.info(String.format("UsersService.saveOrSet(username=%s, roles=%s)", users.getUsername(), roles.getName()));
+	public void save(Users users, Roles roles) {
+		LOG.info(String.format("UsersService.save(username=%s, roles=%s)", users.getUsername(), roles.getName()));
 		mUsersRepository.save(users);
 		mRolesRepository.save(roles);
 	}

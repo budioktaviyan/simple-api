@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.airsystem.sample.api.domain.Users;
-import com.airsystem.sample.api.domain.UsersPassword;
+import com.airsystem.sample.api.domain.custom.UsersPassword;
 import com.airsystem.sample.api.service.ApplicationService;
 import com.airsystem.sample.api.utils.Configs;
 
@@ -28,30 +27,6 @@ public class ApplicationController {
 
 	@Autowired
 	private ApplicationService mApplicationService;
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Map<String, String> applicationLogin(@RequestBody Users users) {
-		Map<String, String> jsonObject = new HashMap<String, String>();
-
-		try {
-			ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
-			String password = shaPasswordEncoder.encodePassword(users.getPassword(), null);
-
-			Map credentials = new HashMap();
-			credentials.put(Configs.USERNAME, users.getUsername());
-			credentials.put(Configs.PASSWORD, password);
-
-			LOG.info(String.format("ApplicationController.applicationLogin(username=%s, password=%s)",
-									users.getUsername(), password));
-			mApplicationService.findByUsernameAndPassword(credentials);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.FORBIDDEN.name());
-		}
-
-		return jsonObject;
-	}
 
 	@RequestMapping(value = "/changepassword", method = RequestMethod.PUT)
 	public Map<String, String> setFixedApplicationPassword(@RequestParam String username, @RequestBody UsersPassword usersPassword) {
@@ -69,7 +44,7 @@ public class ApplicationController {
 
 			LOG.info(String.format("ApplicationController.setFixedApplicationPassword(username=%s, oldpassword=%s, newpassword=%s)",
 									username, oldpassword, newpassword));
-			mApplicationService.setFixedApplicationPassword(credentials);
+			mApplicationService.setApplicationPassword(credentials);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

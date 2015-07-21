@@ -1,12 +1,8 @@
-package com.airsystem.sample.api.domain;
-
-import org.springframework.data.repository.NoRepositoryBean;
+package com.airsystem.sample.api.domain.custom;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
  */
-
-@NoRepositoryBean
 public class UsersPassword {
 	private String oldpassword;
 	private String newpassword;

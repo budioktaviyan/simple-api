@@ -49,13 +49,13 @@ public class EmployeeController {
 		return mEmployeeService.findById(id);
 	}
 
-	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)
-	public Map<String, String> saveOrSet(@RequestBody Employee employee) {
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public Map<String, String> save(@RequestBody Employee employee) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
 		try {
-			LOG.info(String.format("EmployeeController.saveOrSet(name=%s)", employee.getName()));
-			mEmployeeService.saveOrSet(employee);
+			LOG.info(String.format("EmployeeController.save(name=%s)", employee.getName()));
+			mEmployeeService.save(employee);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -65,8 +65,31 @@ public class EmployeeController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Map<String, String> delete(@RequestParam Long id) {
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	public Map<String, String> update(@PathVariable Long id, @RequestBody Employee employee) {
+		Map<String, String> jsonObject = new HashMap<String, String>();
+
+		try {
+			LOG.info(String.format("EmployeeController.update(id=%d)", id));
+			Employee update = mEmployeeService.findById(id);
+			update.setName(employee.getName());
+			update.setGender(employee.getGender());
+			update.setPhone(employee.getPhone());
+			update.setEmail(employee.getEmail());
+			update.setBirthdate(employee.getBirthdate());
+
+			mEmployeeService.save(update);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
+		}
+
+		return jsonObject;
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public Map<String, String> delete(@PathVariable Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
 		try {
