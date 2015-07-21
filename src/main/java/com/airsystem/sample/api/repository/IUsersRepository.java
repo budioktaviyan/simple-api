@@ -22,6 +22,8 @@ public interface IUsersRepository extends JpaRepository<Users, Long> {
 	@Query("update Users set password=?3 where username=?1 and password=?2")
 	Integer setApplicationPassword(String username, String oldpassword, String newpassword);
 
+	List<Users> findByUsername(String username);
+
 	List<Users> findByRolesName(String rolesname, Sort sort);
 
 	Page<Users> findByRolesName(String rolesname, Pageable pageable);

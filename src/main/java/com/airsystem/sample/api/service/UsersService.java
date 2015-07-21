@@ -1,6 +1,7 @@
 package com.airsystem.sample.api.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.airsystem.sample.api.domain.Users;
 import com.airsystem.sample.api.repository.IRolesRepository;
 import com.airsystem.sample.api.repository.IUsersRepository;
 import com.airsystem.sample.api.utils.Configs;
+import com.airsystem.sample.api.utils.Constants;
 
 /**
  * @author Budi Oktaviyan Suryanto (budi.oktaviyan@icloud.com)
@@ -69,6 +71,21 @@ public class UsersService {
 		LOG.info(String.format("UsersService.save(username=%s, roles=%s)", users.getUsername(), roles.getName()));
 		mUsersRepository.save(users);
 		mRolesRepository.save(roles);
+	}
+
+	public Integer setApplicationPassword(Map<String, Object> credentials) throws Exception {
+		String username = credentials.get(Configs.USERNAME).toString();
+		String oldpassword = credentials.get(Configs.USERS_OLD_PASSWORD).toString();
+		String newpassword = credentials.get(Configs.USERS_NEW_PASSWORD).toString();
+
+		LOG.info(String.format("ApplicationService.setApplicationPassword(username=%s, oldpassword=%s, newpassword=%s)",
+								username, oldpassword, newpassword));
+		Integer result = mUsersRepository.setApplicationPassword(username, oldpassword, newpassword);
+
+		if (result == Constants.EMPTY) {
+			throw new Exception("OldPassword is not valid!");
+		}
+		return result;
 	}
 
 	public void delete(Long id) {

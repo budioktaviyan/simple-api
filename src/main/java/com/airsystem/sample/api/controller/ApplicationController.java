@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.airsystem.sample.api.domain.custom.UsersPassword;
-import com.airsystem.sample.api.service.ApplicationService;
+import com.airsystem.sample.api.service.UsersService;
 import com.airsystem.sample.api.utils.Configs;
 
 /**
@@ -26,7 +26,7 @@ public class ApplicationController {
 	private static final Logger LOG = Logger.getLogger(ApplicationController.class.getSimpleName());
 
 	@Autowired
-	private ApplicationService mApplicationService;
+	private UsersService mUsersService;
 
 	@RequestMapping(value = "/changepassword", method = RequestMethod.PUT)
 	public Map<String, String> setFixedApplicationPassword(@RequestParam String username, @RequestBody UsersPassword usersPassword) {
@@ -44,7 +44,7 @@ public class ApplicationController {
 
 			LOG.info(String.format("ApplicationController.setFixedApplicationPassword(username=%s, oldpassword=%s, newpassword=%s)",
 									username, oldpassword, newpassword));
-			mApplicationService.setApplicationPassword(credentials);
+			mUsersService.setApplicationPassword(credentials);
 			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
