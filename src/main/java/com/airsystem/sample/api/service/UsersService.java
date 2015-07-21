@@ -38,6 +38,11 @@ public class UsersService {
 		return mUsersRepository.findAll(sortByUsername());
 	}
 
+	public Users findById(Long id) {
+		LOG.info(String.format("UsersService.findById(%d)", id));
+		return mUsersRepository.findOne(id);
+	}
+
 	public List<Users> findByRolesName(String rolesname) {
 		LOG.info(String.format("UsersService.findByRolesName(%s)", rolesname));
 		return mUsersRepository.findByRolesName(rolesname, sortByUsername());

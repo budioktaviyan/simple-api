@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +59,12 @@ public class UsersController {
 		return mUsersService.findByRolesNameAndPaging(rolesname, offset, size);
 	}
 
+	@RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+	public Users findById(@PathVariable Long id) {
+		LOG.info(String.format("UsersController.findById(id=%d)", id));
+		return mUsersService.findById(id);
+	}
+
 	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)
 	public Map<String, String> saveOrSet(@RequestBody UsersDetail usersDetail) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
@@ -67,6 +74,7 @@ public class UsersController {
 			Users users = usersDetail.getUsers().get(Constants.FIRST_INDEX);
 			Roles roles = usersDetail.getRoles().get(Constants.FIRST_INDEX);
 			users.setPassword(shaPasswordEncoder.encodePassword(users.getPassword(), null));
+			roles.setId(users.getId());
 			roles.setUsers(users);
 
 			LOG.info(String.format("UsersController.saveOrSet(username=%s, roles=%s)", users.getUsername(), roles.getName()));

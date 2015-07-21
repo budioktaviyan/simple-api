@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,12 @@ public class EmployeeController {
 	public Page<Employee> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
 		LOG.info(String.format("EmployeeController.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		return mEmployeeService.findAllAndPaging(offset, size);
+	}
+
+	@RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+	public Employee findById(@PathVariable Long id) {
+		LOG.info(String.format("EmployeeController.findById(id=%d)", id));
+		return mEmployeeService.findById(id);
 	}
 
 	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)

@@ -33,6 +33,11 @@ public class EmployeeService {
 		return mEmployeeRepository.findAll(sortByName());
 	}
 
+	public Employee findById(Long id) {
+		LOG.info(String.format("EmployeeService.findById(%d)", id));
+		return mEmployeeRepository.findOne(id);
+	}
+
 	public Page<Employee> findAllAndPaging(int offset, int size) {
 		LOG.info(String.format("EmployeeService.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		Pageable pageable = new PageRequest(offset, size, sortByName());
