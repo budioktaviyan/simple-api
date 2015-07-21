@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,31 +34,31 @@ public class UsersController {
 	@Autowired
 	private UsersService mUsersService;
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Users> findAll() {
 		LOG.info("UsersController.findAll()");
 		return mUsersService.findAll();
 	}
 
-	@RequestMapping(value = "/roles", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/roles", method = RequestMethod.GET)
 	public List<Users> findByRolesName(@RequestParam String rolesname) {
 		LOG.info(String.format("UsersController.findByRolesName(%s)", rolesname));
 		return mUsersService.findByRolesName(rolesname);
 	}
 
-	@RequestMapping(value = "/all/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
 	public Page<Users> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
 		LOG.info(String.format("UsersController.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		return mUsersService.findAllAndPaging(offset, size);
 	}
 
-	@RequestMapping(value = "/roles/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/roles/pages", method = RequestMethod.GET)
 	public Page<Users> findByRolesNameAndPaging(@RequestParam String rolesname, @RequestParam int offset, @RequestParam int size) {
 		LOG.info(String.format("UsersController.findByRolesNameAndPaging(rolesname=%s, offset=%d, size=%d)", rolesname, offset, size));
 		return mUsersService.findByRolesNameAndPaging(rolesname, offset, size);
 	}
 
-	@RequestMapping(value = "/createormodify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)
 	public Map<String, String> saveOrSet(@RequestBody UsersDetail usersDetail) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
@@ -81,7 +80,7 @@ public class UsersController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public Map<String, String> delete(@RequestParam Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 

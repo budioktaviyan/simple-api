@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,19 +30,19 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService mEmployeeService;
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Employee> findAll() {
 		LOG.info("EmployeeController.findAll()");
 		return mEmployeeService.findAll();
 	}
 
-	@RequestMapping(value = "/all/pages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/all/pages", method = RequestMethod.GET)
 	public Page<Employee> findAllAndPaging(@RequestParam int offset, @RequestParam int size) {
 		LOG.info(String.format("EmployeeController.findAllAndPaging(offset=%d, size=%d)", offset, size));
 		return mEmployeeService.findAllAndPaging(offset, size);
 	}
 
-	@RequestMapping(value = "/createormodify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/createormodify", method = RequestMethod.POST)
 	public Map<String, String> saveOrSet(@RequestBody Employee employee) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
@@ -59,7 +58,7 @@ public class EmployeeController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public Map<String, String> delete(@RequestParam Long id) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 

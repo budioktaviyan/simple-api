@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class ApplicationController {
 	@Autowired
 	private ApplicationService mApplicationService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Map<String, String> applicationLogin(@RequestBody Users users) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
@@ -54,7 +53,7 @@ public class ApplicationController {
 		return jsonObject;
 	}
 
-	@RequestMapping(value = "/changepassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/changepassword", method = RequestMethod.PUT)
 	public Map<String, String> setFixedApplicationPassword(@RequestParam String username, @RequestBody UsersPassword usersPassword) {
 		Map<String, String> jsonObject = new HashMap<String, String>();
 
