@@ -103,4 +103,20 @@ public class UsersController {
 
 		return jsonObject;
 	}
+
+	@RequestMapping(value = "/delete/all", method = RequestMethod.DELETE)
+	public Map<String, String> deleteAll() {
+		Map<String, String> jsonObject = new HashMap<String, String>();
+
+		try {
+			LOG.info("UsersController.deleteAll()");
+			mUsersService.deleteAll();
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.OK.name());
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			jsonObject.put(Configs.JSON_RESPONSE, HttpStatus.INTERNAL_SERVER_ERROR.name());
+		}
+
+		return jsonObject;
+	}
 }

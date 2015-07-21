@@ -71,6 +71,11 @@ public class UsersService {
 		mUsersRepository.delete(id);
 	}
 
+	public void deleteAll() {
+		LOG.info("UsersService.deleteAll()");
+		mUsersRepository.deleteAll();
+	}
+
 	private Sort sortByUsername() {
 		return new Sort(Direction.DESC, Configs.USERNAME);
 	}

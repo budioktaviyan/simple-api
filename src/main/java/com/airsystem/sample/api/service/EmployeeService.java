@@ -54,6 +54,11 @@ public class EmployeeService {
 		mEmployeeRepository.delete(id);
 	}
 
+	public void deleteAll() {
+		LOG.info("EmployeeService.deleteAll()");
+		mEmployeeRepository.deleteAll();
+	}
+
 	private Sort sortByName() {
 		return new Sort(Direction.DESC, Configs.EMPLOYEE_NAME);
 	}
