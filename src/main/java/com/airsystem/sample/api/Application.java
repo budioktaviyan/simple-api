@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import com.airsystem.sample.api.service.ApplicationService;
 
@@ -17,6 +18,7 @@ import com.airsystem.sample.api.service.ApplicationService;
 
 @SpringBootApplication
 @EnableJpaRepositories
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class Application extends GlobalAuthenticationConfigurerAdapter {
 
 	@Autowired
