@@ -20,8 +20,6 @@ ext {
 }
 
 apply plugin: 'war'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
 
 war {
     baseName = projectName
@@ -32,17 +30,12 @@ repositories {
     jcenter()
 }
 
-configurations.all {
-    exclude module: 'slf4j-log4j12'
-}
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-log4j:${springBootVersion}")
-    compile("org.hibernate:hibernate-c3p0:${hibernateVersion}")
     runtime("mysql:mysql-connector-java:${mysqlVersion}")
+    runtime("org.hibernate:hibernate-c3p0:${hibernateVersion}")
 }
 
 task wrapper(type: Wrapper) {
