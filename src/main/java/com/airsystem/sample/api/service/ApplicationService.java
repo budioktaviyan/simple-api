@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,7 @@ import com.airsystem.sample.api.utils.Constants;
 
 @Service
 public class ApplicationService implements UserDetailsService {
-	private static final Logger LOG = Logger.getLogger(ApplicationService.class.getSimpleName());
+	private static final Logger LOG = LoggerFactory.getLogger(ApplicationService.class.getSimpleName());
 
 	@Autowired
 	private IUsersRepository mUsersRepository;

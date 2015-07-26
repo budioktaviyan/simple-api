@@ -1,14 +1,15 @@
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
 buildscript {
     ext {
         springBootVersion = '1.2.5.RELEASE'
         mysqlVersion = '5.1.36'
         hibernateVersion = '4.3.10.Final'
     }
-
     repositories {
         jcenter()
     }
-
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
@@ -18,9 +19,6 @@ ext {
     projectName = 'simple-api'
     projectVersion = '1.0'
 }
-
-apply plugin: 'spring-boot'
-apply plugin: 'war'
 
 war {
     baseName = projectName

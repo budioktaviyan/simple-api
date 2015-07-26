@@ -2,7 +2,8 @@ package com.airsystem.sample.api.service;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ import com.airsystem.sample.api.utils.Configs;
 @Service
 @Transactional
 public class EmployeeService {
-	private static final Logger LOG = Logger.getLogger(EmployeeService.class.getSimpleName());
+	private static final Logger LOG = LoggerFactory.getLogger(EmployeeService.class.getSimpleName());
 
 	@Autowired
 	private IEmployeeRepository mEmployeeRepository;

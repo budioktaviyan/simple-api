@@ -7,7 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +32,7 @@ import com.airsystem.sample.api.utils.Configs;
 
 @RestController
 public class ApplicationController {
-	private static final Logger LOG = Logger.getLogger(ApplicationController.class.getSimpleName());
+	private static final Logger LOG = LoggerFactory.getLogger(ApplicationController.class.getSimpleName());
 
 	@Resource(name = "authenticationManager")
 	private AuthenticationManager mAuthenticationManager;
